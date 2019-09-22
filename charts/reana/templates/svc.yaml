@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "reana.fullname" . }}
+  labels:
+{{ include "reana.labels" . | indent 4 }}
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ include "reana.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "reana-wdb.fullname" . }}
+  labels:
+{{ include "reana-wdb.labels" . | indent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: socket
+      port: {{ .Values.service.port }}
+      targetPort: 19840
+      protocol: TCP
+    - name: ui
+      port: {{ .Values.service.ui.port }}
+      targetPort: 1984
+      nodePort: {{ .Values.service.socket.nodePort }}
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ include "reana-wdb.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

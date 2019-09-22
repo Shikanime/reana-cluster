@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "reana-ui.fullname" . }}
+  labels:
+{{ include "reana-ui.labels" . | indent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ include "reana-ui.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

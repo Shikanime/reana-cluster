@@ -1,0 +1,57 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "reana.fullname" . }}
+  labels:
+{{ include "reana.labels" . | indent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  rules:
+  {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          - path: /api
+            backend:
+              serviceName: {{ include "reana.fullname" . }}
+              servicePort: 80
+          - path: /oauth
+            backend:
+              serviceName: {{ include "reana.fullname" . }}
+              servicePort: 80
+          - path: /account
+            backend:
+              serviceName: {{ include "reana.fullname" . }}
+              servicePort: 80
+          - path: /lost-password
+            backend:
+              serviceName: {{ include "reana.fullname" . }}
+              servicePort: 80
+          - path: /confirm
+            backend:
+              serviceName: {{ include "reana.fullname" . }}
+              servicePort: 80
+          - path: /login
+            backend:
+              serviceName: {{ include "reana.fullname" . }}
+              servicePort: 80
+          - path: /logout
+            backend:
+              serviceName: {{ include "reana.fullname" . }}
+              servicePort: 80
+          - path: /sign-up
+            backend:
+              serviceName: {{ include "reana.fullname" . }}
+              servicePort: 80
+        {{- if .Values.ui.enabled }}
+          - path: /
+            backend:
+              serviceName: {{ include "reana.fullname" . }}-ui
+              servicePort: 80
+        {{- end }}
+  {{- end }}
+{{- end }}

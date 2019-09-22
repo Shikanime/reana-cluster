@@ -1,0 +1,29 @@
+replicaCount: 1
+
+rootPath:
+sharedVolumePath:
+
+image:
+  repository: kozea/wdb
+  tag: 3.2.5
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: NodePort
+  ui:
+    port: 1984
+    nodePort: 31984
+  socket:
+    port: 19840
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
