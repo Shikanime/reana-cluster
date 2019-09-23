@@ -22,9 +22,9 @@ spec:
               mountPath: {{ .path | quote }}
             {{- end }}
           ports:
-            - name: tcp
+            - name: amqp
               containerPort: 5672
-            - name: management
+            - name: ui
               containerPort: 15672
           env:
             {{- range .Values.env }}

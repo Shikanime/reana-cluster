@@ -9,11 +9,11 @@ spec:
   ports:
     - name: socket
       port: {{ .Values.service.port }}
-      targetPort: 19840
+      targetPort: socket
       protocol: TCP
     - name: ui
       port: {{ .Values.service.ui.port }}
-      targetPort: 1984
+      targetPort: ui
       nodePort: {{ .Values.service.ui.nodePort }}
       protocol: TCP
   selector:

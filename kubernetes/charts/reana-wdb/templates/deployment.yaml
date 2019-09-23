@@ -17,9 +17,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: socket
-              containerPort: 1984
             - name: ui
+              containerPort: 1984
+            - name: socket
               containerPort: 19840
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

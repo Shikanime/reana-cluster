@@ -14,7 +14,7 @@ mounts: []
 service:
   type: NodePort
   port: 5672
-  management:
+  ui:
     port: 15672
 
 resources: {}

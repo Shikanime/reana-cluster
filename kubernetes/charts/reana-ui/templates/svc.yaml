@@ -7,9 +7,9 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - name: http
+    - name: ui
       port: {{ .Values.service.port }}
-      targetPort: 80
+      targetPort: ui
       protocol: TCP
   selector:
     app.kubernetes.io/name: {{ include "reana-ui.name" . }}

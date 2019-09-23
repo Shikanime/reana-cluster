@@ -7,13 +7,13 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - name: tcp
+    - name: amqp
       port: {{ .Values.service.port }}
-      targetPort: 5672
+      targetPort: amqp
       protocol: TCP
-    - name: management
-      port: {{ .Values.service.management.port }}
-      targetPort: 15672
+    - name: ui
+      port: {{ .Values.service.ui.port }}
+      targetPort: ui
       protocol: TCP
   selector:
     app.kubernetes.io/name: {{ include "reana-message-broker.name" . }}

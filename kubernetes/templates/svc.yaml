@@ -7,9 +7,9 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - name: http
+    - name: rest-api
       port: 80
-      targetPort: 5000
+      targetPort: rest-api
       protocol: TCP
   selector:
     app.kubernetes.io/name: {{ include "reana.name" . }}

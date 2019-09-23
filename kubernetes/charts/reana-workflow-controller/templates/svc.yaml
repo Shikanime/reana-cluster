@@ -7,9 +7,9 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - name: http
+    - name: rest-api
       port: {{ .Values.service.port }}
-      targetPort: 5000
+      targetPort: rest-api
       protocol: TCP
   selector:
     app.kubernetes.io/name: {{ include "reana-workflow-controller.name" . }}
