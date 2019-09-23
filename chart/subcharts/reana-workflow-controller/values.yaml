@@ -1,7 +1,12 @@
+global:
+  postgresql: {}
+
 debug: false
 
-apiServerSecret:
+apiServerSecret: ""
 deploymentType: local
+
+gitlab: {}
 
 replicaCount: 1
 

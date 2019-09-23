@@ -16,16 +16,18 @@ hostName: &hostName reana-dev.cern.ch
 
 sharedVolume: &sharedVolume
   extraVolumeMounts:
-    - name: *sharedVolumeName
-      mountPath: *sharedVolumePath
+    - name: &sharedVolumeName  reana-server-shared-volume
+      mountPath: &sharedVolumePath "/var/reana"
   extraVolumes:
     - name: *sharedVolumeName
       persistentVolumeClaim:
         claimName: manila-cephfs-pvc
         readOnly: false
   extraEnv:
-    SHARED_VOLUME_PATH: *sharedVolumePath
-    REANA_STORAGE_BACKEND: "cephfs"
+    - name: SHARED_VOLUME_PATH
+      value: *sharedVolumePath
+    - name: REANA_STORAGE_BACKEND
+      value: "cephfs"
 
 reanaCephFS:
   enabled: true
@@ -38,21 +40,21 @@ reanaCephFS:
   cephDomainName: ""
   cephRegion: ""
 
-reanaServer:
+reana-server:
   hostName: *hostName
   gitlab: *gitlab
   cern: *cern
   <<: *sharedVolume
 
-reanaWorkflowController:
+reana-workflow-controller:
   hostName: *hostName
   gitlab: *gitlab
   <<: *sharedVolume
 
-reanaUi:
+reana-ui:
   enabled: true
 
-reanaWdb:
+reana-wdb:
   enabled: true
 
 postgresql:

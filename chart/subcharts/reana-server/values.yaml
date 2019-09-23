@@ -1,4 +1,11 @@
+global:
+  postgresql: {}
+
 debug: false
+
+cern: {}
+
+gitlab: {}
 
 replicaCount: 1
 

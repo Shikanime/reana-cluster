@@ -44,7 +44,7 @@ spec:
                   name: reana-postgresql
                   key: password
 {{- if .Values.extraEnv }}
-{{ tpl (toYaml .Values.extraEnv) $ | indent 8 }}
+{{ tpl (toYaml .Values.extraEnv) $ | indent 12 }}
 {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -87,7 +87,7 @@ spec:
               value: {{ . }}
             {{- end }}
 {{- if .Values.extraEnv }}
-{{ tpl (toYaml .Values.extraEnv) $ | indent 8 }}
+{{ tpl (toYaml .Values.extraEnv) $ | indent 12 }}
 {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

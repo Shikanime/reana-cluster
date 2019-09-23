@@ -20,5 +20,5 @@ dependencies:
 - name: reana-wdb
   repository: file://subcharts/reana-wdb
   version: 0.1.0
-digest: sha256:d1c56145427820ea2b04df44e002b8f9bbca679ef8fd7e52fe08ba238d184b9e
-generated: "2019-09-23T16:31:13.484138+02:00"
+digest: sha256:f2b593886b80fa56549aa74516dfa38007477102ca94f560d65429238970a329
+generated: "2019-09-23T18:18:36.708731+02:00"
