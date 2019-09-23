@@ -1,3 +1,4 @@
+{{- if .Values.cephFS.enabled }}
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -13,3 +14,4 @@ parameters:
   protocol: CEPHFS
   backend: csi-cephfs
   csi-driver: csi-cephfsplugin
+{{- end }}
