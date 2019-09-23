@@ -42,7 +42,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if .Values.debug }}
           command: ["/bin/sh","-c"]
-          args: ["flask run --host=0.0.0.0"]
+          args: ["flask", "run", "--host=0.0.0.0"]
           tty: true
           stdin: true
           {{- end }}
