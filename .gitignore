@@ -71,3 +71,6 @@ target/
 
 # Visual Studio compiled
 .vscode
+
+# Helm dependencies
+kubernetes/charts/*.tgz
