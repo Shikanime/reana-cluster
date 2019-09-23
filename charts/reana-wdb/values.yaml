@@ -9,6 +9,8 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+mounts: []
+
 service:
   type: NodePort
   port: 19840

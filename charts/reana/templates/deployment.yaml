@@ -5,17 +5,17 @@ metadata:
   labels:
 {{ include "reana.labels" . | indent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       labels:
         app.kubernetes.io/name: {{ include "reana.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-    {{- with .Values.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -27,29 +27,16 @@ spec:
           stdin: true
           {{- end }}
           volumeMounts:
-            - mountPath: {{SHARED_VOLUME_PATH}}
+            - mountPath: {{ .Values.sharedVolumePath  }}
               name: reana-shared-volume
-            {% set mountpoints=RS_MOUNTPOINTS %}
-            {% for mount in mountpoints %}
-            - mountPath: {{mount['path'].split(':')[1]}}
-              name: {{mount['name']}}
-            {% endfor %}
+            {{- range .Values.mounts }}
+            - name: {{ .name }}
+              mountPath: {{ .path | quote }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 5000
           env:
-            {{- if .Values.url }}
-            - name: REANA_URL
-              value: {{ .Values.url }}
-            {{- end }}
-            {% set environment=RS_ENVIRONMENT %}
-            {% for envvar in environment %}
-            {% for key, value in envvar.items() %}
-            - name: {{key}}
-              value: "{{value}}"
-            {% endfor %}
-            {% endfor %}
-            {% if not DEBUG %}
             - name: REANA_DB_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -60,51 +47,52 @@ spec:
                 secretKeyRef:
                   name: reana-db-secrets
                   key: password
-            {% endif %}
+            {{- with .Values.url }}
+            - name: REANA_URL
+              value: {{ . }}
+            {{- end }}
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
         - name: scheduler
-          image: {{SERVER_IMAGE}}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["flask", "start-scheduler"]
-          imagePullPolicy: {{IMAGE_PULL_POLICY}}
           volumeMounts:
-          - mountPath: {{SHARED_VOLUME_PATH}}
-            name: reana-shared-volume
-          {% set mountpoints=RS_MOUNTPOINTS %}
-          {% for mount in mountpoints %}
-          - mountPath: {{mount['path'].split(':')[1]}}
-            name: {{mount['name']}}
-          {% endfor %}
+            - mountPath: {{ .Values.sharedVolumePath  }}
+              name: reana-shared-volume
+            {{- range .Values.mounts }}
+            - name: {{ .name }}
+              mountPath: {{ .path | quote }}
+            {{- end }}
           env:
-          {% set environment=RS_ENVIRONMENT %}
-          {% for envvar in environment %}
-          {% for key, value in envvar.items() %}
-          - name: {{key}}
-            value: "{{value}}"
-          {% endfor %}
-          {% endfor %}
-          {% if not DEBUG %}
-          - name: REANA_DB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: reana-db-secrets
-                key: user
-          - name: REANA_DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: reana-db-secrets
-                key: password
-          {% endif %}
-        volumes:
+            - name: REANA_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: reana-db-secrets
+                  key: user
+            - name: REANA_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: reana-db-secrets
+                  key: password
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
+      volumes:
         - name: reana-shared-volume
-          {% if CEPHFS %}
+          {{- if .Values.cephFS.enabled }}
           persistentVolumeClaim:
             claimName: manila-cephfs-pvc
             readOnly: false
-          {% else %}
+          {{- else }}
           hostPath:
-            path: {{ROOT_PATH}}
-          {% endif %}
-        {% for mount in mountpoints %}
-        - name: {{mount['name']}}
-          {{mount['type']}}:
-            path: {{mount['path'].split(':')[0]}}
-        {% endfor %}
+            path: {{ .Values.rootPath }}
+          {{- end }}
+        {{- range .Values.mounts }}
+        - name: {{ .name }}
+          {{ .type }}:
+            path: {{ .path | quote }}
+        {{- end }}

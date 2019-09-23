@@ -21,10 +21,6 @@ spec:
             - name: reana-shared-volume
               mountPath: {{ .Values.sharedVolumePath }}
           env:
-          {{- range .Values.env }}
-            - name: {{ .name }}
-              value: {{ .value | quote }}
-          {{- end }}
             - name: REANA_DB_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -35,6 +31,10 @@ spec:
                 secretKeyRef:
                   name: reana-db-secrets
                   key: password
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
         - name: rest-api-server
@@ -51,28 +51,14 @@ spec:
               mountPath: "/var/run/secrets/kubernetes.io/serviceaccount"
             - name: reana-shared-volume
               mountPath: {{ .Values.sharedVolumePath }}
-            {{- range mounts }}
+            {{- range .Values.mounts }}
             - name: {{ .name }}
               mountPath: {{ .path | quote }}
             {{- end }}
           ports:
-            - containerPort: 5000
-              name: http
+            - name: http
+              containerPort: 5000
           env:
-            {{- if .Values.url }}
-            - name: REANA_URL
-              value: {{ .Values.url }}
-            {{- end }}
-            - name: REANA_DEPLOYMENT_TYPE
-              value: {{ .Values.deploymentType }}
-            {{- if .Values.cephFS.enabled }}
-            - name: REANA_STORAGE_BACKEND
-              value: "cephfs"
-            {{- end }}
-            {{- range .Values.env }}
-            - name: {{ .name }}
-              value: {{ .value | quote }}
-            {{- end }}
             - name: REANA_DB_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -83,20 +69,34 @@ spec:
                 secretKeyRef:
                   name: reana-db-secrets
                   key: password
+            - name: REANA_DEPLOYMENT_TYPE
+              value: {{ .Values.deploymentType }}
+            {{- with .Values.url }}
+            - name: REANA_URL
+              value: {{ . }}
+            {{- end }}
+            {{- if .Values.cephFS.enabled }}
+            - name: REANA_STORAGE_BACKEND
+              value: "cephfs"
+            {{- end }}
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
       volumes:
+        - name: svaccount
+          secret:
+            secretName: {{ .Values.apiServerSecret }}
         - name: reana-shared-volume
-          {{- if .Value.CephFS.enabled }}
+          {{- if .Values.cephFS.enabled }}
           persistentVolumeClaim:
             claimName: manila-cephfs-pvc
             readOnly: false
           {{- else }}
           hostPath:
-            path: {{ .Value.rootPath }}
+            path: {{ .Values.rootPath }}
           {{- end }}
-        - name: svaccount
-          secret:
-            secretName: {{K8S_APISERVER_SECRET}}
-        {{- range mounts }}
+        {{- range .Values.mounts }}
         - name: {{ .name }}
           {{ .type }}:
             path: {{ .path }}
@@ -105,11 +105,11 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-    {{- with .Values.affinity }}
+      {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
+      {{- end }}
+      {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+      {{- end }}

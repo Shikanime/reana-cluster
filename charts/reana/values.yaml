@@ -13,6 +13,11 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+cephFS:
+  size: 5G
+
+mounts: []
+
 service:
   type: ClusterIP
   port: 80

@@ -9,7 +9,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: {{ .Value.cephFS.size }}G
+      storage: {{ .Values.cephFS.size | quote }}
   storageClassName: manila-csicephfs-share
   mountOptions:
     - nonempty

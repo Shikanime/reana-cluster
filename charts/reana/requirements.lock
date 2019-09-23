@@ -1,0 +1,21 @@
+dependencies:
+- name: redis
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 9.1.12
+- name: postgresql
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 6.3.9
+- name: reana-message-broker
+  repository: file://../reana-message-broker
+  version: 0.1.0
+- name: reana-ui
+  repository: file://../reana-ui
+  version: 0.1.0
+- name: reana-wdb
+  repository: file://../reana-wdb
+  version: 0.1.0
+- name: reana-workflow-controller
+  repository: file://../reana-workflow-controller
+  version: 0.1.0
+digest: sha256:6a268a36567cf0ed42a625ca3525a56fcc566f969438d738f7a0b26d1421693b
+generated: "2019-09-23T00:22:35.060805+02:00"

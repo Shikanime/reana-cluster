@@ -11,7 +11,7 @@ metadata:
   {{- end }}
 spec:
   rules:
-  {{- range .Values.ingress.hosts }}
+    {{- range .Values.ingress.hosts }}
     - host: {{ .host | quote }}
       http:
         paths:
@@ -47,11 +47,11 @@ spec:
             backend:
               serviceName: {{ include "reana.fullname" . }}
               servicePort: 80
-        {{- if .Values.ui.enabled }}
+          {{- if .Values.ui.enabled }}
           - path: /
             backend:
               serviceName: {{ include "reana.fullname" . }}-ui
               servicePort: 80
-        {{- end }}
-  {{- end }}
+          {{- end }}
+    {{- end }}
 {{- end }}
