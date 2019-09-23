@@ -1,0 +1,126 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ include "reana-server.fullname" . }}
+  labels:
+{{ include "reana-server.labels" . | indent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "reana-server.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.debug }}
+          command: ["/bin/sh","-c"]
+          args: ["set -e; ./scripts/setup; invenio run -h 0.0.0.0 -p 5000"]
+          tty: true
+          stdin: true
+          {{- end }}
+          volumeMounts:
+            {{- if .Values.extraVolumeMounts }}
+            {{- toYaml .Values.extraVolumeMounts | nindent 9 }}
+            {{- end }}
+          ports:
+            - name: rest-api
+              containerPort: 5000
+          env:
+            - name: CERN_CONSUMER_KEY
+              value: {{ .Values.cern.consumerKey }}
+            - name: CERN_CONSUMER_SECRET
+              value: {{ .Values.cern.consumerSecret }}
+            - name: REANA_GITLAB_HOST
+              value: {{ .Values.gitlab.host }}
+            - name: REANA_GITLAB_OAUTH_APP_ID
+              value: {{ .Values.gitlab.oauthAppId }}
+            - name: REANA_GITLAB_OAUTH_APP_SECRET
+              value: {{ .Values.gitlab.oauthAppSecret }}
+            - name: REANA_GITLAB_OAUTH_REDIRECT_URL
+              value: {{ .Values.gitlab.oauthRedirectUrl }}
+            - name: REANA_DB_HOST
+              value: reana-postgresql
+            {{- if .Values.global.postgresql.servicePort }}
+            - name: REANA_DB_PORT
+              value: {{ .Values.global.postgresql.servicePort }}
+            {{- end }}
+            - name: REANA_DB_NAME
+              value: {{ .Values.global.postgresql.postgresqlDatabase }}
+            - name: REANA_DB_USERNAME
+              value: {{ .Values.global.postgresql.postgresqlUsername }}
+            - name: REANA_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: reana-postgresql
+                  key: postgresql-password
+            {{- with .Values.hostName }}
+            - name: REANA_URL
+              value: {{ . }}
+            {{- end }}
+{{- if .Values.extraEnv }}
+{{ tpl (toYaml .Values.extraEnv) $ | indent 8 }}
+{{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        - name: scheduler
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["flask", "start-scheduler"]
+          volumeMounts:
+            {{- if .Values.extraVolumeMounts }}
+            {{- toYaml .Values.extraVolumeMounts | nindent 9 }}
+            {{- end }}
+          env:
+            - name: CERN_CONSUMER_KEY
+              value: {{ .Values.cern.consumerKey }}
+            - name: CERN_CONSUMER_SECRET
+              value: {{ .Values.cern.consumerSecret }}
+            - name: REANA_GITLAB_HOST
+              value: {{ .Values.gitlab.host }}
+            - name: REANA_GITLAB_OAUTH_APP_ID
+              value: {{ .Values.gitlab.oauthAppId }}
+            - name: REANA_GITLAB_OAUTH_APP_SECRET
+              value: {{ .Values.gitlab.oauthAppSecret }}
+            - name: REANA_GITLAB_OAUTH_REDIRECT_URL
+              value: {{ .Values.gitlab.oauthRedirectUrl }}
+            - name: REANA_DB_HOST
+              value: reana-postgresql
+            - name: REANA_DB_PORT
+              value: {{ .Values.global.postgresql.servicePort }}
+            - name: REANA_DB_NAME
+              value: {{ .Values.global.postgresql.postgresqlDatabase }}
+            - name: REANA_DB_USERNAME
+              value: {{ .Values.global.postgresql.postgresqlUsername }}
+            - name: REANA_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: reana-postgresql
+                  key: postgresql-password
+            {{- range .Values.extraEnv }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
+      volumes:
+        {{- if .Values.extraVolumes }}
+        {{- toYaml .Values.extraVolumes | nindent 7 }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

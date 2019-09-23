@@ -1,21 +1,24 @@
+debug: false
+
 replicaCount: 1
 
 image:
-  repository: reanahub/reana-message-broker
-  tag: stable
+  repository: reanahub/reana-server
+  tag: latest
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-mounts: []
+extraVolumes: []
+extraVolumeMounts: []
+
+extraEnv: {}
 
 service:
   type: NodePort
-  port: 5672
-  ui:
-    port: 15672
+  port: 80
 
 resources: {}
 

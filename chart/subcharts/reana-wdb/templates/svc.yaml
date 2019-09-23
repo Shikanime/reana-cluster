@@ -8,13 +8,12 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - name: socket
-      port: {{ .Values.service.port }}
+      port: {{ .Values.service.socket.port }}
       targetPort: socket
       protocol: TCP
     - name: ui
       port: {{ .Values.service.ui.port }}
       targetPort: ui
-      nodePort: {{ .Values.service.ui.nodePort }}
       protocol: TCP
   selector:
     app.kubernetes.io/name: {{ include "reana-wdb.name" . }}

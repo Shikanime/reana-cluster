@@ -173,13 +173,13 @@ Deploy on CERN infrastructure
 
       (reana) $ pip install reana-cluster
 
-9. Create the secret named ``reana-db-secrets`` which will hold the database login
+9. Create the secret named ``reana-postgresql`` which will hold the database login
    details. Database user inside the ``user`` key and the database password
    inside the ``password`` key, for example:
 
    .. code-block:: console
 
-      (reana) $ kubectl create secret generic reana-db-secrets \
+      (reana) $ kubectl create secret generic reana-postgresql \
                 --from-literal=user=<your-db-user>
                 --from-literal=password=<your-db-password>
 

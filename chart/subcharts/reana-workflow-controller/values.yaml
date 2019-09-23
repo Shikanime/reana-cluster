@@ -1,15 +1,23 @@
+debug: false
+
+apiServerSecret:
+deploymentType: local
+
 replicaCount: 1
 
 image:
-  repository: kozea/wdb
-  tag: 3.2.5
+  repository: reanahub/reana-workflow-controller
+  tag: latest
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-mounts: []
+extraVolumes: []
+extraVolumeMounts: []
+
+extraEnv: {}
 
 service:
   type: NodePort

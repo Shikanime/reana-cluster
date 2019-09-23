@@ -5,5 +5,20 @@ dependencies:
 - name: postgresql
   repository: https://kubernetes-charts.storage.googleapis.com/
   version: 6.3.9
-digest: sha256:98a2d54d041c33dfab8f261d025814194223480eb5e7c33a81ce7bce723b0122
-generated: "2019-09-23T11:13:31.649615+02:00"
+- name: rabbitmq
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  version: 6.7.4
+- name: reana-server
+  repository: file://subcharts/reana-server
+  version: 0.1.0
+- name: reana-workflow-controller
+  repository: file://subcharts/reana-workflow-controller
+  version: 0.1.0
+- name: reana-ui
+  repository: file://subcharts/reana-ui
+  version: 0.1.0
+- name: reana-wdb
+  repository: file://subcharts/reana-wdb
+  version: 0.1.0
+digest: sha256:d1c56145427820ea2b04df44e002b8f9bbca679ef8fd7e52fe08ba238d184b9e
+generated: "2019-09-23T16:31:13.484138+02:00"
