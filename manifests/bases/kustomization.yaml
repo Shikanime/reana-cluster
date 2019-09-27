@@ -1,0 +1,13 @@
+apiVersion: configuration.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app.kubernetes.io/part-of: reana
+  app.kubernetes.io/managed-by: kustomize
+resources:
+  - postgresql
+  - rabbitmq
+  - redis
+  - reana-server
+  - reana-ui
+  - reana-wdb
+  - reana-workflow-controller

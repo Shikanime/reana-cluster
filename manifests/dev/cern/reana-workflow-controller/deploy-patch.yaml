@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reana-workflow-controller
+spec:
+  template:
+    spec:
+      containers:
+        - name: job-status-consumer
+          env:
+            - name: REANA_URL
+              value: reana-dev.cern.ch
+        - name: rest-api-server
+          env:
+            - name: REANA_STORAGE_BACKEND
+              value: cephfs

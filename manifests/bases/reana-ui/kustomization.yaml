@@ -1,0 +1,12 @@
+apiVersion: configuration.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app.kubernetes.io/name: reana-ui
+  app.kubernetes.io/version: stable
+  app.kubernetes.io/component: ui
+images:
+  - name: reanahub/reana-ui
+    newTag: stable
+resources:
+  - deploy.yaml
+  - svc.yaml

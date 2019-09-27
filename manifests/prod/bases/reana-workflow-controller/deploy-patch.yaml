@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reana-workflow-controller
+spec:
+  template:
+    spec:
+      containers:
+        - name: rest-api-server
+          env:
+            - name: REANA_DEPLOYMENT_TYPE
+              value: production
+            - name: REANA_DB_HOST
+              value: reana-postgresql
+            - name: REANA_DB_PORT
+              value: "5432"
+            - name: REANA_DB_USERNAME
+              value: postgres
+            - name: REANA_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: reana-postgresql
+                  key: password
+        - name: rest-api-server
+          env:
+            - name: REANA_DB_HOST
+              value: reana-postgresql
+            - name: REANA_DB_PORT
+              value: "5432"
+            - name: REANA_DB_USERNAME
+              value: postgres
+            - name: REANA_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: reana-postgresql
+                  key: password

@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reana-wdb
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: reana-wdb
+    spec:
+      containers:
+        - image: kozea/wdb:3.2.5
+          name: reana-wdb
+          ports:
+            - containerPort: 1984
+              name: ui
+            - containerPort: 19840
+              name: socket

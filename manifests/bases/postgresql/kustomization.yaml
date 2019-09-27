@@ -1,0 +1,19 @@
+apiVersion: configuration.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app.kubernetes.io/name: postgresql
+  app.kubernetes.io/version: "11.5.0"
+  app.kubernetes.io/component: database
+images:
+  - name: docker.io/bitnami/minideb
+    newTag: stretch
+  - name: docker.io/bitnami/postgresql
+    newTag: 11.5.0-debian-9-r34
+resources:
+  - headless-svc.yaml
+  - statefulset.yaml
+  - svc.yaml
+secretGenerator:
+  - literals:
+      - postgresql-password=postgresql
+    name: postgresql

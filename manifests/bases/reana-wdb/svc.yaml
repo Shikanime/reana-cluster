@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: reana-wdb
+spec:
+  ports:
+    - name: socket
+      port: 19840
+      targetPort: socket
+    - name: ui
+      port: 1984
+      targetPort: ui
+  selector:
+    app: reana-wdb
+  type: ClusterIP

@@ -1,0 +1,31 @@
+apiVersion: configuration.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app.kubernetes.io/name: rabbitmq
+  app.kubernetes.io/version: "5.0.5"
+  app.kubernetes.io/component: database
+configMapGenerator:
+  - files:
+      - health-ping_liveness_local.sh
+      - health-ping_liveness_local_and_master.sh
+      - health-ping_liveness_master.sh
+      - health-ping_readiness_local.sh
+      - health-ping_readiness_local_and_master.sh
+      - health-ping_readiness_master.sh
+    name: redis-health
+  - files:
+      - master.conf
+      - redis.conf
+      - replica.conf
+    name: redis
+images:
+  - name: docker.io/bitnami/redis
+    newTag: 5.0.5-debian-9-r141
+resources:
+  - headless-svc.yaml
+  - master-statefulset.yaml
+  - master-svc.yaml
+secretGenerator:
+  - literals:
+      - redis-password=7rPUVK3Akq
+    name: redis

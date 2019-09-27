@@ -1,0 +1,27 @@
+apiVersion: configuration.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app.kubernetes.io/name: rabbitmq
+  app.kubernetes.io/version: "3.7.18"
+  app.kubernetes.io/component: message-broker
+configMapGenerator:
+  - files:
+      - config-rabbitmq.conf
+    literals:
+      - enabled_plugins=[rabbitmq_management, rabbitmq_peer_discovery_k8s].
+    name: rabbitmq-config
+images:
+  - name: docker.io/bitnami/rabbitmq
+    newTag: 3.7.18-debian-9-r1
+resources:
+  - endpoint-reader-rb.yaml
+  - endpoint-reader-role.yaml
+  - headless-svc.yaml
+  - sa.yaml
+  - statefulset.yaml
+  - svc.yaml
+secretGenerator:
+  - literals:
+      - rabbitmq-erlang-cookie=5qOqP3fKZTudpThIWf4nJghosfDdo83a
+      - rabbitmq-password=zXY2l8YDUT
+    name: rabbitmq

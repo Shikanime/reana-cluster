@@ -1,0 +1,11 @@
+apiVersion: skaffold/v1beta15
+kind: Config
+metadata:
+  name: reana
+deploy:
+  kustomize:
+    path: manifest/dev/cern/kustomization.yaml
+profiles:
+  - deploy:
+    kustomize:
+      path: manifest/dev/bases/kustomization.yaml

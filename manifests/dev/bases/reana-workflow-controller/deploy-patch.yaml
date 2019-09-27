@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reana-workflow-controller
+spec:
+  template:
+    spec:
+      containers:
+        - args: ["flask run --host=0.0.0.0"]
+          command: ["/bin/sh", "-c"]
+          env:
+            - name: REANA_DEPLOYMENT_TYPE
+              value: local
+          name: rest-api-server
+          stdin: true
+          tty: true

@@ -1,0 +1,22 @@
+apiVersion: configuration.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app.kubernetes.io/name: reana-server
+  app.kubernetes.io/version: "0.5.0"
+  app.kubernetes.io/component: message-broker
+configMapGenerator:
+  - files:
+      - kbr5.conf
+    name: reana-server
+images:
+  - name: docker.io/reanahub/reana-server
+    newTag: 0.5.0
+resources:
+  - endpoint-reader-rb.yaml
+  - endpoint-reader-role.yaml
+  - headless-svc.yaml
+  - sa.yaml
+  - statefulset.yaml
+  - svc.yaml
+  - service-reader-cluster-role.yaml
+  - service-reader-crb.yaml
