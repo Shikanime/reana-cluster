@@ -4,15 +4,13 @@ metadata:
   name: rabbitmq
 spec:
   podManagementPolicy: OrderedReady
-  replicas: 1
   selector:
-    matchLabels:
+    matchLabels: &containerLabels
       app: rabbitmq
   serviceName: rabbitmq-headless
   template:
     metadata:
-      labels:
-        app: rabbitmq
+      labels: *containerLabels
     spec:
       containers:
         - command:
@@ -103,7 +101,7 @@ spec:
                 secretKeyRef:
                   key: rabbitmq-password
                   name: rabbitmq
-          image: docker.io/bitnami/rabbitmq:3.7.18-debian-9-r1
+          image: docker.io/bitnami/rabbitmq
           livenessProbe:
             exec:
               command:
@@ -114,7 +112,6 @@ spec:
             failureThreshold: 6
             initialDelaySeconds: 120
             periodSeconds: 30
-            successThreshold: 1
             timeoutSeconds: 20
           name: rabbitmq
           ports:
@@ -133,10 +130,8 @@ spec:
                 - -c
                 - rabbitmq-health-check "http://user:$RABBITMQ_PASSWORD@127.0.0.1:15672/api/healthchecks/node"
                   '{"status":"ok"}'
-            failureThreshold: 3
             initialDelaySeconds: 10
             periodSeconds: 30
-            successThreshold: 1
             timeoutSeconds: 20
           volumeMounts:
             - mountPath: /opt/bitnami/rabbitmq/conf
@@ -147,7 +142,6 @@ spec:
         fsGroup: 1001
         runAsUser: 1001
       serviceAccountName: rabbitmq
-      terminationGracePeriodSeconds: 10
       volumes:
         - configMap:
             items:

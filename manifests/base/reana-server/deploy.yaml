@@ -3,11 +3,12 @@ kind: Deployment
 metadata:
   name: reana-server
 spec:
-  replicas: 1
+  selector:
+    matchLabels: &containerLabels
+      app: reana-server
   template:
     metadata:
-      labels:
-        app: reana-server
+      labels: *containerLabels
     spec:
       containers:
         - env:
@@ -23,13 +24,17 @@ spec:
                   name: reana-postgresql
                   key: password
             - name: REANA_GITLAB_HOST
-              value: "gitlab.com"
-          image: docker.io/reanahub/reana-server:0.5.0
+              value: gitlab.com
+          image: docker.io/reanahub/reana-server
           name: server
           ports:
             - containerPort: 5000
               name: rest-api
-        - image: "docker.io/reanahub/reana-server:0.5.0"
+          resources:
+            limits:
+              cpu: 2
+              memory: 512M
+        - image: docker.io/reanahub/reana-server
           command: ["flask", "start-scheduler"]
           env:
             - name: REANA_DB_HOST
@@ -44,3 +49,7 @@ spec:
                   name: reana-postgresql
                   key: password
           name: scheduler
+          resources:
+            limits:
+              cpu: 2
+              memory: 512M

@@ -1,22 +1,16 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: redis-master
+  name: redis
 spec:
   selector:
-    matchLabels:
+    matchLabels: &containerLabels
       app: redis
       role: master
   serviceName: redis-headless
   template:
     metadata:
-      annotations:
-        checksum/configmap: 1776e2fc2923d882e4cb42da11e09f0ed81de634790ae0e9117406ffa0a6265b
-        checksum/health: 11fae6ff4f1bce610a6b304269e06ef6ed8852bafeee94fd11e9c936460b155e
-        checksum/secret: 56d4847905ded982e497fba78f45ac1dcfa8bfd9f10795c253823c4008790523
-      labels:
-        app: redis
-        role: master
+      labels: *containerLabels
     spec:
       containers:
         - command:
@@ -49,7 +43,7 @@ spec:
                   name: redis
             - name: REDIS_PORT
               value: "6379"
-          image: docker.io/bitnami/redis:5.0.5-debian-9-r141
+          image: docker.io/bitnami/redis
           livenessProbe:
             exec:
               command:
@@ -59,7 +53,6 @@ spec:
             failureThreshold: 5
             initialDelaySeconds: 5
             periodSeconds: 5
-            successThreshold: 1
             timeoutSeconds: 5
           name: redis
           ports:
@@ -74,8 +67,6 @@ spec:
             failureThreshold: 5
             initialDelaySeconds: 5
             periodSeconds: 5
-            successThreshold: 1
-            timeoutSeconds: 1
           securityContext:
             runAsUser: 1001
           volumeMounts:

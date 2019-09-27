@@ -4,8 +4,21 @@ metadata:
   name: reana
 deploy:
   kustomize:
-    path: manifest/dev/cern/kustomization.yaml
+    path: manifest/prod/base/kustomization.yaml
 profiles:
-  - deploy:
-    kustomize:
-      path: manifest/dev/bases/kustomization.yaml
+  - activation:
+      - env: ENV=development
+        kubeContext: minikube
+        command: dev
+    deploy:
+      kustomize:
+        path: manifest/dev/kustomization.yaml
+    name: dev
+  - activation:
+      - env: ENV=production
+        kubeContext: cern
+        command: prod
+    deploy:
+      kustomize:
+        path: manifest/prod/cern/kustomization.yaml
+    name: dev

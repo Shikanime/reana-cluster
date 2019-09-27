@@ -3,17 +3,22 @@ kind: Deployment
 metadata:
   name: reana-wdb
 spec:
-  replicas: 1
+  selector:
+    matchLabels: &containerLabels
+      app: reana-wdb
   template:
     metadata:
-      labels:
-        app: reana-wdb
+      labels: *containerLabels
     spec:
       containers:
-        - image: kozea/wdb:3.2.5
+        - image: kozea/wdb
           name: reana-wdb
           ports:
             - containerPort: 1984
               name: ui
             - containerPort: 19840
               name: socket
+          resources:
+            limits:
+              cpu: 1
+              memory: 512M

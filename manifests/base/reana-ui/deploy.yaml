@@ -3,15 +3,20 @@ kind: Deployment
 metadata:
   name: reana-ui
 spec:
-  replicas: 1
+  selector:
+    matchLabels: &containerLabels
+      app: reana-ui
   template:
     metadata:
-      labels:
-        app: reana-ui
+      labels: *containerLabels
     spec:
       containers:
-        - image: reanahub/reana-ui:stable
+        - image: reanahub/reana-ui
           name: reana-ui
           ports:
             - containerPort: 80
               name: ui
+          resources:
+            limits:
+              cpu: 1
+              memory: 512M

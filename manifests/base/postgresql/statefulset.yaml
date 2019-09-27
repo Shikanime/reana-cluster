@@ -3,17 +3,14 @@ kind: StatefulSet
 metadata:
   name: postgresql
 spec:
-  replicas: 1
   selector:
-    matchLabels:
+    matchLabels: &containerLabels
       app: postgresql
       role: master
   serviceName: postgresql-headless
   template:
     metadata:
-      labels:
-        app: postgresql
-        role: master
+      labels: *containerLabels
       name: postgresql
     spec:
       containers:
@@ -33,7 +30,7 @@ spec:
                 secretKeyRef:
                   key: postgresql-password
                   name: postgresql
-          image: docker.io/bitnami/postgresql:11.5.0-debian-9-r34
+          image: docker.io/bitnami/postgresql
           livenessProbe:
             exec:
               command:
@@ -42,8 +39,6 @@ spec:
                 - exec pg_isready -U "postgres" -h 127.0.0.1 -p 5432
             failureThreshold: 6
             initialDelaySeconds: 30
-            periodSeconds: 10
-            successThreshold: 1
             timeoutSeconds: 5
           name: postgresql
           ports:
@@ -59,8 +54,6 @@ spec:
                   [ -f /opt/bitnami/postgresql/tmp/.initialized ]
             failureThreshold: 6
             initialDelaySeconds: 5
-            periodSeconds: 10
-            successThreshold: 1
             timeoutSeconds: 5
           resources:
             requests:
@@ -80,15 +73,13 @@ spec:
               chmod 700 /opt/bitnami/postgresql/data
               find /bitnami/postgresql -mindepth 0 -maxdepth 1 -not -name ".snapshot" -not -name "lost+found" | \
                 xargs chown -R 1001:1001
-          image: docker.io/bitnami/minideb:stretch
+          image: docker.io/bitnami/minideb
           imagePullPolicy: Always
           name: init-chmod-data
           resources:
             requests:
               cpu: 250m
               memory: 256Mi
-          securityContext:
-            runAsUser: 0
           volumeMounts:
             - mountPath: /opt/bitnami/postgresql
               name: data
