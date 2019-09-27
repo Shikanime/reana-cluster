@@ -16,40 +16,40 @@ spec:
         paths:
           - path: /api
             backend:
-              serviceName: "{{ include "reana.fullname" . }}-server"
+              serviceName: {{ include "reanaserver.fullname" . }}
               servicePort: 80
           - path: /oauth
             backend:
-              serviceName: "{{ include "reana.fullname" . }}-server"
+              serviceName: {{ include "reanaserver.fullname" . }}
               servicePort: 80
           - path: /account
             backend:
-              serviceName: "{{ include "reana.fullname" . }}-server"
+              serviceName: {{ include "reanaserver.fullname" . }}
               servicePort: 80
           - path: /lost-password
             backend:
-              serviceName: "{{ include "reana.fullname" . }}-server"
+              serviceName: {{ include "reanaserver.fullname" . }}
               servicePort: 80
           - path: /confirm
             backend:
-              serviceName: "{{ include "reana.fullname" . }}-server"
+              serviceName: {{ include "reanaserver.fullname" . }}
               servicePort: 80
           - path: /login
             backend:
-              serviceName: "{{ include "reana.fullname" . }}-server"
+              serviceName: {{ include "reanaserver.fullname" . }}
               servicePort: 80
           - path: /logout
             backend:
-              serviceName: "{{ include "reana.fullname" . }}-server"
+              serviceName: {{ include "reanaserver.fullname" . }}
               servicePort: 80
           - path: /sign-up
             backend:
-              serviceName: "{{ include "reana.fullname" . }}-server"
+              serviceName: {{ include "reanaserver.fullname" . }}
               servicePort: 80
           {{- if .Values.reanaui.enabled }}
           - path: /
             backend:
-              serviceName: "{{ include "reana.fullname" . }}-ui"
+              serviceName: {{ include "reanaui.fullname" . }}
               servicePort: 80
           {{- end }}
 {{- end }}

@@ -53,3 +53,34 @@ PostgreSQL fullname
 {{- define "reanapostgresql.fullname" -}}
 {{- printf "%s-postgresql" .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Reana Server fullname
+*/}}
+{{- define "reanaserver.fullname" -}}
+{{- printf "%s-reanaserver" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+
+{{/*
+Reana Workflow Controller fullname
+*/}}
+{{- define "reanaworkflowcontroller.fullname" -}}
+{{- printf "%s-reanaworkflowcontroller" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+
+{{/*
+Reana UI fullname
+*/}}
+{{- define "reanaui.fullname" -}}
+{{- printf "%s-reanaui" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+
+{{/*
+Reana WDB fullname
+*/}}
+{{- define "reanawdb.fullname" -}}
+{{- printf "%s-reanawdb" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
