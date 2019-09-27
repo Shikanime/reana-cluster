@@ -1,0 +1,45 @@
+global:
+  postgresql: {}
+  gitlab: {}
+
+replicaCount: 1
+
+image:
+  repository: reanahub/reanaworkflowcontroller
+  tag: latest
+  pullPolicy: IfNotPresent
+  debug: false
+  type: local
+
+imagePullSecrets: []
+
+extraVolumes: []
+extraVolumeMounts: []
+
+extraEnv: {}
+
+api:
+  resources: {}
+
+service:
+  type: NodePort
+  port: 19840
+  ui:
+    port: 1984
+    nodePort: 31984
+
+metrics: {}
+
+serviceAccount:
+  enabled: false
+
+securityContext:
+  enabled: false
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

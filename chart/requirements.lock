@@ -8,17 +8,17 @@ dependencies:
 - name: rabbitmq
   repository: https://kubernetes-charts.storage.googleapis.com/
   version: 6.7.4
-- name: reana-server
-  repository: file://subcharts/reana-server
+- name: reanaserver
+  repository: file://subcharts/reanaserver
   version: 0.1.0
-- name: reana-workflow-controller
-  repository: file://subcharts/reana-workflow-controller
+- name: reanaworkflowcontroller
+  repository: file://subcharts/reanaworkflowcontroller
   version: 0.1.0
-- name: reana-ui
-  repository: file://subcharts/reana-ui
+- name: reanaui
+  repository: file://subcharts/reanaui
   version: 0.1.0
-- name: reana-wdb
-  repository: file://subcharts/reana-wdb
+- name: reanawdb
+  repository: file://subcharts/reanawdb
   version: 0.1.0
-digest: sha256:f2b593886b80fa56549aa74516dfa38007477102ca94f560d65429238970a329
-generated: "2019-09-23T18:18:36.708731+02:00"
+digest: sha256:f630df0f82375c2e46ef29a66f54bb9b98529d9be32187bf38ed5974a7c451dd
+generated: "2019-09-27T12:05:27.69302+02:00"

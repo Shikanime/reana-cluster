@@ -42,7 +42,7 @@ reana_cluster_ready_necessary_components = ['workflow-controller',
 traefik_release_name = 'reana-traefik'
 """Name used for traefik deployment."""
 
-DEFAULT_REANA_DB_SECRET_NAME = 'reana-postgresql'
+DEFAULT_REANA_DB_SECRET_NAME = 'postgresql'
 """Default name for REANA DB Kubernetes secrets object."""
 
 DEFAULT_REANA_DB_USER = 'reana'

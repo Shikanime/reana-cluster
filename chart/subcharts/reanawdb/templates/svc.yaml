@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "reanawdb.fullname" . }}
+  labels:
+{{ include "reanawdb.labels" . | indent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: socket
+      port: {{ .Values.service.socket.port }}
+      targetPort: socket
+      protocol: TCP
+    - name: ui
+      port: {{ .Values.service.ui.port }}
+      targetPort: ui
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: {{ include "reanawdb.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

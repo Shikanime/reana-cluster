@@ -1,36 +1,39 @@
 global:
-  storageClass: manila-csicephfs-share
+  # storageClass: manila-csicephfs-share
 
-cern: &cern
-  consumerKey: ""
-  consumerSecret: ""
+  cern:
+    key: ""
+    secret: ""
 
-gitlab: &gitlab
-  host: "gitlab.cern.ch"
-  oauthAppId: ""
-  oauthAppSecret: ""
-  oauthAppSecret: ""
-  oauthRedirectUrl: ""
+  gitlab:
+    oauthAppId: ""
+    oauthAppSecret: ""
+    oauthAppSecret: ""
+    oauthRedirectUrl: ""
+
+  postgresql:
+    postgresqlUsername: reana
+    servicePort: 5432
 
 hostName: &hostName reana-dev.cern.ch
 
 sharedVolume: &sharedVolume
   extraVolumeMounts:
-    - name: &sharedVolumeName  reana-server-shared-volume
-      mountPath: &sharedVolumePath "/var/reana"
+  #   - name: &sharedVolumeName  reanaserver-shared-volume
+  #     mountPath: &sharedVolumePath "/var/reana"
   extraVolumes:
-    - name: *sharedVolumeName
-      persistentVolumeClaim:
-        claimName: manila-cephfs-pvc
-        readOnly: false
+  #   - name: *sharedVolumeName
+  #     persistentVolumeClaim:
+  #       claimName: manila-cephfs-pvc
+  #       readOnly: false
   extraEnv:
-    - name: SHARED_VOLUME_PATH
-      value: *sharedVolumePath
-    - name: REANA_STORAGE_BACKEND
-      value: "cephfs"
+  #   - name: SHARED_VOLUME_PATH
+  #     value: *sharedVolumePath
+  #   - name: REANA_STORAGE_BACKEND
+  #     value: "cephfs"
 
-reanaCephFS:
-  enabled: true
+reanacephfs:
+  enabled: false
   cephAuthUrl: ""
   cephUserId: ""
   cephUserName: ""
@@ -40,22 +43,19 @@ reanaCephFS:
   cephDomainName: ""
   cephRegion: ""
 
-reana-server:
-  hostName: *hostName
-  gitlab: *gitlab
-  cern: *cern
-  <<: *sharedVolume
+reanaui:
+  enabled: false
 
-reana-workflow-controller:
-  hostName: *hostName
-  gitlab: *gitlab
-  <<: *sharedVolume
-
-reana-ui:
+reanawdb:
   enabled: true
 
-reana-wdb:
-  enabled: true
+reanaserver:
+  <<: *sharedVolume
+  hostName: *hostName
+
+reanaworkflowcontroller:
+  <<: *sharedVolume
+  hostName: *hostName
 
 postgresql:
   persistence:
@@ -65,7 +65,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 ingress:
-  enabled: false
+  enabled: true
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.frontend.entryPoints: "http,https"
