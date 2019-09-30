@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reana-workflow-controller
+spec:
+  template:
+    spec:
+      containers:
+        - env:
+            - name: REANA_DEPLOYMENT_TYPE
+              value: local
+          name: rest-api-server
+          volumeMounts:
+            - mountPath: /var/reana
+              name: reana-shared-volume
+        - name: job-status-consumer
+          volumeMounts:
+            - mountPath: /var/reana
+              name: reana-shared-volume
+      volumes:
+        - hostPath:
+            path: /code/reana/workflow-controller
+          name: reana-workflow-controller-code

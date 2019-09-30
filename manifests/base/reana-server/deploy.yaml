@@ -12,12 +12,14 @@ spec:
     spec:
       containers:
         - env:
+            - name: SHARED_VOLUME_PATH
+              value: /var/reana
             - name: REANA_DB_HOST
               value: reana-postgresql
             - name: REANA_DB_PORT
               value: "5432"
             - name: REANA_DB_USERNAME
-              value: postgres
+              value: reana
             - name: REANA_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -34,15 +36,20 @@ spec:
             limits:
               cpu: 2
               memory: 512M
+          volumeMounts:
+            - mountPath: /var/reana
+              name: reana-shared-volume
         - image: docker.io/reanahub/reana-server
           command: ["flask", "start-scheduler"]
           env:
+            - name: SHARED_VOLUME_PATH
+              value: /var/reana
             - name: REANA_DB_HOST
               value: reana-postgresql
             - name: REANA_DB_PORT
               value: "5432"
             - name: REANA_DB_USERNAME
-              value: postgres
+              value: reana
             - name: REANA_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -53,3 +60,6 @@ spec:
             limits:
               cpu: 2
               memory: 512M
+          volumeMounts:
+            - mountPath: /var/reana
+              name: reana-shared-volume

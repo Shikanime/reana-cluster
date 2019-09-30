@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: reana
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.frontend.entryPoints: http,https
+spec:
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - backend:
+              serviceName: reana-server
+              servicePort: 80
+            path: /api
+          - backend:
+              serviceName: reana-server
+              servicePort: 80
+            path: /oauth
+          - backend:
+              serviceName: reana-server
+              servicePort: 80
+            path: /account
+          - backend:
+              serviceName: reana-server
+              servicePort: 80
+            path: /lost-password
+          - backend:
+              serviceName: reana-server
+              servicePort: 80
+            path: /confirm
+          - backend:
+              serviceName: reana-server
+              servicePort: 80
+            path: /login
+          - backend:
+              serviceName: reana-server
+              servicePort: 80
+            path: /logout
+          - backend:
+              serviceName: reana-server
+              servicePort: 80
+            path: /sign-up
+          - backend:
+              serviceName: reana-ui
+              servicePort: 80
+            path: /

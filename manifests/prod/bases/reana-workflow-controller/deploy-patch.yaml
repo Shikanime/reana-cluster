@@ -13,7 +13,7 @@ spec:
             - name: REANA_DB_PORT
               value: "5432"
             - name: REANA_DB_USERNAME
-              value: postgres
+              value: reana
             - name: REANA_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -28,7 +28,7 @@ spec:
             - name: REANA_DB_PORT
               value: "5432"
             - name: REANA_DB_USERNAME
-              value: postgres
+              value: reana
             - name: REANA_DB_PASSWORD
               valueFrom:
                 secretKeyRef:

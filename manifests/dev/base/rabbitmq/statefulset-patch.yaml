@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reana-workflow-controller
+spec:
+  template:
+    spec:
+      containers:
+        - env:
+            - name: WDB_SOCKET_SERVER
+              value: wdb
+            - name: WDB_NO_BROWSER_AUTO_OPEN
+              value: "True"
+          name: rest-api-server

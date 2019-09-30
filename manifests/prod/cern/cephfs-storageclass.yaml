@@ -4,10 +4,10 @@ metadata:
   name: manila-csicephfs-share
 provisioner: manila-provisioner
 parameters:
-  type: "Geneva CephFS Testing"
-  zones: nova
+  backend: csi-cephfs
+  csi-driver: csi-cephfsplugin
   osSecretName: os-trustee
   osSecretNamespace: kube-system
   protocol: CEPHFS
-  backend: csi-cephfs
-  csi-driver: csi-cephfsplugin
+  type: "Geneva CephFS Testing"
+  zones: nova

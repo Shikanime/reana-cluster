@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reana-server
+spec:
+  template:
+    spec:
+      containers:
+        - name: server
+          volumeMounts:
+            - name: reana-server-code
+              mountPath: /code
+      volumes:
+        - name: reana-server-code
+          hostPath:
+            path: /var/reana/server

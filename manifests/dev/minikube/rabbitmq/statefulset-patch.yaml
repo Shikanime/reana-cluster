@@ -6,11 +6,11 @@ spec:
   template:
     spec:
       containers:
-        - args: ["flask run --host=0.0.0.0"]
-          command: ["/bin/sh", "-c"]
-          env:
+        - env:
             - name: REANA_DEPLOYMENT_TYPE
               value: local
           name: rest-api-server
-          stdin: true
-          tty: true
+      volumes:
+        - hostPath:
+            path: /code/reana-workflow-controller
+          name: reana-workflow-controller-code

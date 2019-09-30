@@ -15,5 +15,5 @@ resources:
   - svc.yaml
 secretGenerator:
   - literals:
-      - postgresql-password=postgresql
+      - postgresql-password=reana
     name: postgresql

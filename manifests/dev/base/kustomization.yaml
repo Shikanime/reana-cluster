@@ -2,6 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
   - ../base
+commonLabels:
+  stage: dev
 patchesStrategicMerge:
+  - rabbitmq/statefulset-patch.yaml
   - reana-server/deploy-patch.yaml
   - reana-workflow-controller/deploy-patch.yaml

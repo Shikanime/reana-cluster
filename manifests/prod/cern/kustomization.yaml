@@ -7,5 +7,5 @@ patchesStrategicMerge:
   - reana-server/deploy-patch.yaml
   - reana-workflow-controller/deploy-patch.yaml
 resources:
-  - reana-cephfs-storageclass.yaml
-  - reana-ingress.yaml
+  - cephfs-storageclass.yaml
+  - ingress.yaml

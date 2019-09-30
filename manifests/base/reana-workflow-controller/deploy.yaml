@@ -17,10 +17,15 @@ spec:
           env:
             - name: REANA_GITLAB_HOST
               value: gitlab.com
+            - name: SHARED_VOLUME_PATH
+              value: /var/reana
           resources:
             limits:
               cpu: 2
               memory: 512M
+          volumeMounts:
+            - mountPath: /var/reana
+              name: reana-shared-volume
         - name: rest-api-server
           image: reanahub/reana-workflow-controller
           env:
@@ -28,6 +33,8 @@ spec:
               value: gitlab.com
             - name: REANA_DEPLOYMENT_TYPE
               value: local
+            - name: SHARED_VOLUME_PATH
+              value: /var/reana
           ports:
             - name: rest-api
               containerPort: 5000
@@ -35,3 +42,6 @@ spec:
             limits:
               cpu: 2
               memory: 512M
+          volumeMounts:
+            - mountPath: /var/reana
+              name: reana-shared-volume

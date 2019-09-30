@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reana-workflow-controller
+spec:
+  template:
+    spec:
+      containers:
+        - args: ["flask run --host=0.0.0.0"]
+          command: ["/bin/sh", "-c"]
+          env:
+            - name: FLASK_ENV
+              value: development
+            - name: WDB_SOCKET_SERVER
+              value: wdb
+            - name: WDB_NO_BROWSER_AUTO_OPEN
+              value: "True"
+            # Development configuration
+            # Hack to not verify SSL connections https://stackoverflow.com/questions/48391750/disable-python-requests-ssl-validation-for-an-imported-module
+            # This is useful when using a self hosted GitLab application locally
+            - name: CURL_CA_BUNDLE
+              value: ""
+            # Disabel CORS in development environment, for example
+            # to connect from an external React application.
+            - name: INVENIO_CORS_SEND_WILDCARD
+              value: "False"
+            - name: INVENIO_CORS_SUPPORTS_CREDENTIALS
+              value: "True"
+          name: rest-api-server
+          stdin: true
+          tty: true
+        - name: job-status-consumer
+          env:
+            - name: FLASK_ENV
+              value: development
+            - name: WDB_SOCKET_SERVER
+              value: wdb
+            - name: WDB_NO_BROWSER_AUTO_OPEN
+              value: "True"
+            - name: CURL_CA_BUNDLE
+              value: ""
+            - name: INVENIO_CORS_SEND_WILDCARD
+              value: "False"
+            - name: INVENIO_CORS_SUPPORTS_CREDENTIALS
+              value: "True"
