@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reana-workflow-controller
+spec:
+  template:
+    spec:
+      containers:
+        - name: rest-api-server
+          env:
+            - name: REANA_DEPLOYMENT_TYPE
+              value: production
