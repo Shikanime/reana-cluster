@@ -15,7 +15,7 @@ spec:
             - name: SHARED_VOLUME_PATH
               value: /var/reana
             - name: REANA_DB_HOST
-              value: reana-postgresql
+              value: $(POSTGRESQL_NAME)
             - name: REANA_DB_PORT
               value: "5432"
             - name: REANA_DB_USERNAME
@@ -23,7 +23,7 @@ spec:
             - name: REANA_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: reana-postgresql
+                  name: $(POSTGRESQL_NAME)
                   key: password
             - name: REANA_GITLAB_HOST
               value: gitlab.com
@@ -45,7 +45,7 @@ spec:
             - name: SHARED_VOLUME_PATH
               value: /var/reana
             - name: REANA_DB_HOST
-              value: reana-postgresql
+              value: $(POSTGRESQL_NAME)
             - name: REANA_DB_PORT
               value: "5432"
             - name: REANA_DB_USERNAME
@@ -53,7 +53,7 @@ spec:
             - name: REANA_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: reana-postgresql
+                  name: $(POSTGRESQL_NAME)
                   key: password
           name: scheduler
           resources:
