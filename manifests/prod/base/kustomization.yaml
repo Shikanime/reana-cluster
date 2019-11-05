@@ -3,4 +3,4 @@ kind: Kustomization
 bases:
   - ../../base
 patchesStrategicMerge:
-  - reana-workflow-controller/deploy-patch.yaml
+  - postgresql/statefulset-patch.yaml

@@ -5,6 +5,6 @@ bases:
 commonLabels:
   stage: dev
 patchesStrategicMerge:
-  - rabbitmq/statefulset-patch.yaml
+  - postgresql/statefulset-patch.yaml
   - reana-server/deploy-patch.yaml
   - reana-workflow-controller/deploy-patch.yaml

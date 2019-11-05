@@ -15,10 +15,6 @@ spec:
     spec:
       containers:
         - env:
-            - name: TZ
-              value: "Europe/Zurich"
-            - name: BITNAMI_DEBUG
-              value: "false"
             - name: POSTGRESQL_PORT_NUMBER
               value: "5432"
             - name: POSTGRESQL_VOLUME_DIR

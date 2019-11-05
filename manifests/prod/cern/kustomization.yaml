@@ -6,5 +6,6 @@ patchesStrategicMerge:
   - reana-server/deploy-patch.yaml
   - reana-workflow-controller/deploy-patch.yaml
 resources:
+  - postgresql/statefulset-patch.yaml
   - cephfs-storageclass.yaml
   - ingress.yaml
