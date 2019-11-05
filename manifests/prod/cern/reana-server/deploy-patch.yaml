@@ -13,3 +13,8 @@ spec:
             - name: REANA_URL
               value: reana-dev.cern.ch
           name: server
+      volumes:
+        - name: reana-shared-volume
+          persistentVolumeClaim:
+            claimName: manila-cephfs-pvc
+            readOnly: false

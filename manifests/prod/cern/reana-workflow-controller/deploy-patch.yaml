@@ -6,11 +6,16 @@ spec:
   template:
     spec:
       containers:
-        - name: job-status-consumer
-          env:
+        - env:
             - name: REANA_URL
               value: reana-dev.cern.ch
-        - name: rest-api-server
-          env:
+          name: job-status-consumer
+        - env:
             - name: REANA_STORAGE_BACKEND
               value: cephfs
+          name: rest-api-server
+      volumes:
+        - name: reana-shared-volume
+          persistentVolumeClaim:
+            claimName: manila-cephfs-pvc
+            readOnly: false
