@@ -8,9 +8,9 @@ spec:
       containers:
         - name: server
           volumeMounts:
-            - name: reana-server-code
-              mountPath: /code
+            - mountPath: /code
+              name: reana-server-code
       volumes:
-        - name: reana-server-code
-          hostPath:
-            path: /var/reana/server
+        - hostPath:
+            path: /code/reana-server
+          name: reana-server-code

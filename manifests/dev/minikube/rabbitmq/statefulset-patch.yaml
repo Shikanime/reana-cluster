@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: reana-workflow-controller
+  name: reana-rabbitmq
 spec:
   template:
     spec:
@@ -10,7 +10,13 @@ spec:
             - name: REANA_DEPLOYMENT_TYPE
               value: local
           name: rest-api-server
+          volumeMounts:
+            - mountPath: /code
+              name: reana-rabbitmq-code
       volumes:
         - hostPath:
-            path: /code/reana-workflow-controller
-          name: reana-workflow-controller-code
+            path: /var/reana
+          name: reana-shared-volume
+        - hostPath:
+            path: /code/reana-rabbitmq
+          name: reana-rabbitmq-code

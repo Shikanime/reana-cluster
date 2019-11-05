@@ -11,13 +11,13 @@ spec:
               value: local
           name: rest-api-server
           volumeMounts:
-            - mountPath: /var/reana
-              name: reana-shared-volume
+            - mountPath: /code
+              name: reana-workflow-controller-code
         - name: job-status-consumer
           volumeMounts:
-            - mountPath: /var/reana
-              name: reana-shared-volume
+            - mountPath: /code
+              name: reana-workflow-controller-code
       volumes:
         - hostPath:
-            path: /code/reana/workflow-controller
+            path: /code/reana-workflow-controller
           name: reana-workflow-controller-code
