@@ -16,8 +16,3 @@ resources:
   - svc.yaml
   - service-reader-cluster-role.yaml
   - service-reader-crb.yaml
-vars:
-  - name: POSTGRESQL_NAME
-    objref:
-      name: reana-postgresql
-      kind: Service
