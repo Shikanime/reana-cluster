@@ -7,8 +7,7 @@ metadata:
     traefik.frontend.entryPoints: http,https
 spec:
   rules:
-    - host: localhost
-      http:
+    - http:
         paths:
           - backend:
               serviceName: reana-server

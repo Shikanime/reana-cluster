@@ -4,8 +4,7 @@ metadata:
   name: reana
 spec:
   rules:
-    - host: reana-dev.cern.ch
-      http:
+    - http:
         paths:
           - backend:
               serviceName: reana-server
