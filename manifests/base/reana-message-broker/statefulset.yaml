@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: reana-message-broker
+spec:
+  podManagementPolicy: OrderedReady
+  selector:
+    matchLabels: &containerLabels
+      app: reana-message-broker
+  serviceName: reana-message-broker-headless
+  template:
+    metadata:
+      labels: *containerLabels
+    spec:
+      containers:
+        - env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: K8S_SERVICE_NAME
+              value: reana-message-broker-headless
+            - name: K8S_ADDRESS_TYPE
+              value: hostname
+            - name: RABBITMQ_NODENAME
+              value: rabbit@$(POD_NAME).$(K8S_SERVICE_NAME).$(NAMESPACE).svc.cluster.local
+            - name: K8S_HOSTNAME_SUFFIX
+              value: .$(K8S_SERVICE_NAME).$(NAMESPACE).svc.cluster.local
+            - name: RABBITMQ_LOGS
+              value: "-"
+            - name: RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS
+              value: +S 2:1
+            - name: RABBITMQ_USE_LONGNAME
+              value: "true"
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: rabbitmq-password
+                  name: reana-message-broker
+          image: docker.io/bitnami/rabbitmq
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - rabbitmq-api-check "http://user:$RABBITMQ_PASSWORD@127.0.0.1:15672/api/healthchecks/node"
+                  '{"status":"ok"}'
+            failureThreshold: 6
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            timeoutSeconds: 20
+          name: reana-message-broker
+          ports:
+            - containerPort: 4369
+              name: epmd
+            - containerPort: 5672
+              name: amqp
+            - containerPort: 25672
+              name: dist
+            - containerPort: 15672
+              name: stats
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - rabbitmq-health-check "http://user:$RABBITMQ_PASSWORD@127.0.0.1:15672/api/healthchecks/node"
+                  '{"status":"ok"}'
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 20
+          volumeMounts:
+            - mountPath: /etc/rabbitmq/conf
+              name: config-volume
+            - mountPath: /var/lib/rabbitmq
+              name: data
+            - mountPath: /var/lib/rabbitmq
+              name: erlang-cookie
+              valueFrom:
+                secretKeyRef:
+                  key: rabbitmq-erlang-cookie
+                  name: reana-message-broker
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      serviceAccountName: reana-message-broker
+      volumes:
+        - configMap:
+            items:
+              - key: rabbitmq.conf
+                path: rabbitmq.conf
+              - key: enabled_plugins
+                path: enabled_plugins
+            name: rabbitmq-config
+          name: config-volume
+  volumeClaimTemplates:
+    - metadata:
+        labels:
+          app: reana-message-broker
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi

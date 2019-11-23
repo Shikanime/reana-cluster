@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: reana-rabbitmq
+  name: reana-message-broker
 spec:
   template:
     spec:
@@ -12,11 +12,11 @@ spec:
           name: rest-api-server
           volumeMounts:
             - mountPath: /code
-              name: reana-rabbitmq-code
+              name: reana-message-broker-code
       volumes:
         - hostPath:
             path: /var/reana
           name: reana-shared-volume
         - hostPath:
-            path: /code/reana-rabbitmq
-          name: reana-rabbitmq-code
+            path: /code/reana-message-broker
+          name: reana-message-broker-code

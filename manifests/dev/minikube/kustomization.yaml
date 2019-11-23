@@ -7,4 +7,4 @@ resources:
 patchesStrategicMerge:
   - reana-server/deploy-patch.yaml
   - reana-workflow-controller/deploy-patch.yaml
-  - rabbitmq/statefulset-patch.yaml
+  - reana-message-broker/statefulset-patch.yaml

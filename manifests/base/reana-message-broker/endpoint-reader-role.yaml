@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: rabbitmq-endpoint-reader
+  name: reana-message-broker-endpoint-reader
 rules:
   - apiGroups:
       - ""

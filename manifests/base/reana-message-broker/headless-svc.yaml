@@ -1,8 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: rabbitmq
+  name: reana-message-broker-headless
 spec:
+  clusterIP: None
   ports:
     - name: epmd
       port: 4369
@@ -17,5 +18,4 @@ spec:
       port: 15672
       targetPort: stats
   selector:
-    app: rabbitmq
-  type: ClusterIP
+    app: reana-message-broker

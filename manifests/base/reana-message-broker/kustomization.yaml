@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 commonLabels:
-  app.kubernetes.io/name: rabbitmq
+  app.kubernetes.io/name: reana-message-broker
   app.kubernetes.io/version: "3.7.18"
   app.kubernetes.io/component: message-broker
 configMapGenerator:
@@ -9,10 +9,10 @@ configMapGenerator:
       - config-rabbitmq.conf
     literals:
       - enabled_plugins=[rabbitmq_management, rabbitmq_peer_discovery_k8s].
-    name: rabbitmq-config
+    name: reana-message-broker-config
 images:
-  - name: docker.io/bitnami/rabbitmq
-    newTag: 3.7.18-debian-9-r1
+  - name: docker.io/reanahub/reana-message-broker
+    newTag: 0.5.0
 resources:
   - endpoint-reader-rb.yaml
   - endpoint-reader-role.yaml
@@ -24,4 +24,4 @@ secretGenerator:
   - literals:
       - rabbitmq-erlang-cookie=5qOqP3fKZTudpThIWf4nJghosfDdo83a
       - rabbitmq-password=zXY2l8YDUT
-    name: rabbitmq
+    name: reana-message-broker

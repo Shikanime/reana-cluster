@@ -1,11 +1,11 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: rabbitmq-endpoint-reader
+  name: reana-message-broker-endpoint-reader
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: rabbitmq-endpoint-reader
+  name: reana-message-broker-endpoint-reader
 subjects:
   - kind: ServiceAccount
-    name: rabbitmq
+    name: reana-message-broker

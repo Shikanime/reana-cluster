@@ -6,7 +6,7 @@ commonLabels:
 bases:
   - postgresql
   - redis
-  - rabbitmq
+  - reana-message-broker
   - reana-server
   - reana-ui
   - reana-wdb
